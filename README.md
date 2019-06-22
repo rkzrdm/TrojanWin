@@ -4,6 +4,8 @@ A Simple Trojan GUI Client for Windows. Created by WPF.
 
 [Trojan](https://github.com/trojan-gfw/trojan) is an unidentifiable mechanism that helps you bypass GFW.
 
+![screenshot](https://raw.githubusercontent.com/rkzrdm/TrojanWin/master/.github/screenshot.png)
+
 ## Usage
 
 1. Decompress
