@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using TrojanWin.Core;
@@ -39,9 +41,23 @@ namespace TrojanWin
         {
             base.OnStartup(e);
 
+            CheckOnlyOneInstanceRunning();
+            if (!createdNew) return;
             CheckProcessPathAndCreate();
             InitializeTray();
             RegisterTrayContextMenu();
+        }
+
+        private Mutex singleInstanceMutex;
+        private bool createdNew;
+        private void CheckOnlyOneInstanceRunning()
+        {
+            singleInstanceMutex = new Mutex(true, "TrojanWinSingleInstance", out createdNew);
+            if (!createdNew)
+            {
+                MessageBox.Show("Please do not start app twice (ノ｀Д)ノ");
+                Current.Shutdown(-2);
+            }
         }
 
         private void CheckProcessPathAndCreate()
@@ -91,7 +107,7 @@ namespace TrojanWin
 
         protected override void OnExit(ExitEventArgs e)
         {
-            TrojanProcess.Stop();
+            if (TrojanProcess != null) TrojanProcess.Stop();
             base.OnExit(e);
         }
     }
