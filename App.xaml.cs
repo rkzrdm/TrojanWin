@@ -42,18 +42,19 @@ namespace TrojanWin
             base.OnStartup(e);
 
             CheckOnlyOneInstanceRunning();
-            if (!createdNew) return;
+            if (!shouldContinue) return;
             CheckProcessPathAndCreate();
+            if (!shouldContinue) return;
             InitializeTray();
             RegisterTrayContextMenu();
         }
 
         private Mutex singleInstanceMutex;
-        private bool createdNew;
+        private bool shouldContinue;
         private void CheckOnlyOneInstanceRunning()
         {
-            singleInstanceMutex = new Mutex(true, "TrojanWinSingleInstance", out createdNew);
-            if (!createdNew)
+            singleInstanceMutex = new Mutex(true, "TrojanWinSingleInstance", out shouldContinue);
+            if (!shouldContinue)
             {
                 MessageBox.Show("Please do not start app twice (ノ｀Д)ノ");
                 Current.Shutdown(-2);
@@ -66,8 +67,8 @@ namespace TrojanWin
             if (!TrojanProcess.IsPathValid)
             {
                 MessageBox.Show("Could not find Trojan, please ensure that trojan.exe exists in the current directory");
+                shouldContinue = false;
                 Current.Shutdown(-1);
-                return;
             }
         }
 
