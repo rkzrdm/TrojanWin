@@ -19,7 +19,7 @@ namespace TrojanWin
     public partial class App : Application
     {
         public NotifyIcon NotifyIcon { get; set; }
-        public TrojanProcess TrojanProcess { get; set; }
+        public ProcessBase TrojanProcess { get; set; }
 
         public void StartTrojanProcess()
         {
@@ -46,7 +46,7 @@ namespace TrojanWin
 
         private void CheckProcessPathAndCreate()
         {
-            TrojanProcess = new TrojanProcess("trojan.exe");
+            TrojanProcess = new TrojanProcess();
             if (!TrojanProcess.IsPathValid)
             {
                 MessageBox.Show("Could not find Trojan, please ensure that trojan.exe exists in the current directory");

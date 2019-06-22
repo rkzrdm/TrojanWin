@@ -8,36 +8,16 @@ using TrojanWin.Model;
 
 namespace TrojanWin.Core
 {
-    public class TrojanProcess
+    public class TrojanProcess : ProcessBase
     {
-        public string Path { get; private set; }
-        public Process Process { get; private set; }
-
-        public TrojanProcess(string path)
+        public TrojanProcess() : this("trojan.exe")
         {
-            Path = path;
+        }
+        public TrojanProcess(string path) : base(path)
+        {
         }
 
-        public bool IsPathValid { get => System.IO.File.Exists(Path); }
-
-        public void Start()
-        {
-            if (!IsPathValid) throw new System.IO.FileNotFoundException();
-
-            MakeProcessObject();
-            Process.Start();
-            Process.BeginOutputReadLine();
-            Process.BeginErrorReadLine();
-        }
-
-        public void Stop()
-        {
-            if (Process == null) return;
-            Process.Kill();
-            Process = null;
-        }
-
-        private void MakeProcessObject()
+        protected override void MakeProcessObject()
         {
             Process = new Process();
             Process.StartInfo.FileName = Path;
@@ -55,6 +35,12 @@ namespace TrojanWin.Core
                 if (e.Data == null) return;
                 Messenger.Default.Send(new NewProcessOutputMessage(e.Data));
             };
+        }
+
+        protected override void AfterStart()
+        {
+            Process.BeginOutputReadLine();
+            Process.BeginErrorReadLine();
         }
     }
 }

@@ -2,7 +2,9 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Diagnostics;
 using System.Windows;
+using TrojanWin.Core;
 using TrojanWin.Model;
 
 namespace TrojanWin.ViewModel
@@ -27,6 +29,7 @@ namespace TrojanWin.ViewModel
         public MainViewModel()
         {
             RestartTrojanProcess = new RelayCommand(DoRestartTrojanProcess);
+            EditConfigurationFile = new RelayCommand(DoEditConfigurationFile);
             Messenger.Default.Register<NewProcessOutputMessage>(this, (messenger) => 
             {
                 TrojanLog += messenger.Output + "\n";
@@ -57,6 +60,19 @@ namespace TrojanWin.ViewModel
         {
             TrojanLog = "";
             (Application.Current as App).RestartTrojanProcess();
+        }
+
+        private ProcessBase configurationProcess;
+
+        public RelayCommand EditConfigurationFile { get; set; }
+        private void DoEditConfigurationFile()
+        {
+            configurationProcess = new ConfigurationProcess();
+            if (!configurationProcess.IsPathValid)
+            {
+                System.IO.File.CreateText("config.json");
+            }
+            configurationProcess.Start();
         }
     }
 }

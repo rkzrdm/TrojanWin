@@ -43,7 +43,7 @@
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Height="24">
             <Button x:Name="restartTrojanButton" Width="92" Command="{Binding RestartTrojanProcess}">Restart Trojan</Button>
-            <Button x:Name="openConfigFileButton" Width="140" Margin="16 0 0 0">Edit Configuration File</Button>
+            <Button x:Name="openConfigFileButton" Width="140" Margin="16 0 0 0" Command="{Binding EditConfigurationFile}">Edit Configuration File</Button>
             <Button x:Name="exitAppButton" Width="88" Margin="16 0 0 0" Click="ExitAppButton_Click">Exit Program</Button>
         </StackPanel>
     </Grid>

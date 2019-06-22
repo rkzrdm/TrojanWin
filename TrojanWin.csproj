@@ -70,6 +70,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Core\ConfigurationProcess.cs" />
+    <Compile Include="Core\ProcessBase.cs" />
     <Compile Include="Core\TrojanProcess.cs" />
     <Compile Include="Model\NewAppLogMessage.cs" />
     <Compile Include="Model\NewProcessOutputMessage.cs" />
