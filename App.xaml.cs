@@ -49,7 +49,7 @@ namespace TrojanWin
             TrojanProcess = new TrojanProcess("trojan.exe");
             if (!TrojanProcess.IsPathValid)
             {
-                MessageBox.Show("Could not find Trojan，please ensure that trojan.exe exists in the current directory");
+                MessageBox.Show("Could not find Trojan, please ensure that trojan.exe exists in the current directory");
                 Current.Shutdown(-1);
                 return;
             }
