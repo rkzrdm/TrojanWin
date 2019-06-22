@@ -1,11 +1,15 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
+using TrojanWin.Core;
+using TrojanWin.Model;
 using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace TrojanWin
 {
@@ -15,18 +19,47 @@ namespace TrojanWin
     public partial class App : Application
     {
         public NotifyIcon NotifyIcon { get; set; }
-        
-        private void Application_Startup(object sender, StartupEventArgs e)
+        public TrojanProcess TrojanProcess { get; set; }
+
+        public void StartTrojanProcess()
         {
+            TrojanProcess.Start();
+            Messenger.Default.Send(new NewAppLogMessage("Trojan started"));
+        }
+
+        public void RestartTrojanProcess()
+        {
+            if (TrojanProcess != null) TrojanProcess.Stop();
+            CheckProcessPathAndCreate();
+            TrojanProcess.Start();
+            Messenger.Default.Send(new NewAppLogMessage("Trojan restarted"));
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            CheckProcessPathAndCreate();
             InitializeTray();
             RegisterTrayContextMenu();
+        }
+
+        private void CheckProcessPathAndCreate()
+        {
+            TrojanProcess = new TrojanProcess("trojan.exe");
+            if (!TrojanProcess.IsPathValid)
+            {
+                MessageBox.Show("Could not find Trojan，please ensure that trojan.exe exists in the current directory");
+                Current.Shutdown(-1);
+                return;
+            }
         }
 
         private void InitializeTray()
         {
             NotifyIcon = new NotifyIcon()
             {
-                Text = "A Simple Trojan GUI Client for Windows",
+                Text = "TrojanWin\nDouble click to open window",
                 Visible = true,
                 Icon = TrojanWin.Properties.Resources.Icon
             };
@@ -49,11 +82,17 @@ namespace TrojanWin
         {
             NotifyIcon.ContextMenu = new ContextMenu(new MenuItem[]
             {
-                new MenuItem("退出", (sender, e) =>
+                new MenuItem("Exit", (sender, e) =>
                 {
-                    Current.Shutdown();
+                    Current.Shutdown(0);
                 })
             });
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            TrojanProcess.Stop();
+            base.OnExit(e);
         }
     }
 }

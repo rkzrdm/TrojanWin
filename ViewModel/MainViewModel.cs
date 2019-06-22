@@ -1,4 +1,9 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
+using System;
+using System.Windows;
+using TrojanWin.Model;
 
 namespace TrojanWin.ViewModel
 {
@@ -21,14 +26,16 @@ namespace TrojanWin.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            RestartTrojanProcess = new RelayCommand(DoRestartTrojanProcess);
+            Messenger.Default.Register<NewProcessOutputMessage>(this, (messenger) => 
+            {
+                TrojanLog += messenger.Output + "\n";
+            });
+            Messenger.Default.Register<NewAppLogMessage>(this, (messenger) =>
+            {
+                AppLog += $"[{messenger.Time}] {messenger.Content}\n";
+            });
+            (Application.Current as App).StartTrojanProcess();
         }
 
         private string trojanLog;
@@ -43,6 +50,13 @@ namespace TrojanWin.ViewModel
         {
             get { return appLog; }
             set { Set(() => AppLog, ref appLog, value); }
+        }
+
+        public RelayCommand RestartTrojanProcess { get; set; }
+        private void DoRestartTrojanProcess()
+        {
+            TrojanLog = "";
+            (Application.Current as App).RestartTrojanProcess();
         }
     }
 }

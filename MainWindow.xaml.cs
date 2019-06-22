@@ -40,7 +40,7 @@ namespace TrojanWin
 
         private void ExitAppButton_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            Application.Current.Shutdown(0);
         }
     }
 }

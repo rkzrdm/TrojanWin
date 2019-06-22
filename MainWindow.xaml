@@ -25,7 +25,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="Trojan日志"></TextBlock>
+                <TextBlock Grid.Row="0">Trojan Log</TextBlock>
                 <TextBox x:Name="trojanLogTextBox" Grid.Row="1" Text="{Binding TrojanLog}"
                      TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True"
                      VerticalScrollBarVisibility="Visible"></TextBox>
@@ -35,16 +35,16 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="1*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="程序日志"></TextBlock>
+                <TextBlock Grid.Row="0">Application Log</TextBlock>
                 <TextBox x:Name="appLogTextBox" Grid.Row="1" Text="{Binding AppLog}"
                      TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True"
                      VerticalScrollBarVisibility="Visible"></TextBox>
             </Grid>
         </Grid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Height="24">
-            <Button x:Name="restartTrojanButton" Content="重启Trojan" Width="80"></Button>
-            <Button x:Name="openConfigFileButton" Content="编辑配置文件" Width="80" Margin="16 0 0 0"></Button>
-            <Button x:Name="exitAppButton" Content="退出程序" Width="80" Margin="16 0 0 0" Click="ExitAppButton_Click"></Button>
+            <Button x:Name="restartTrojanButton" Width="92" Command="{Binding RestartTrojanProcess}">Restart Trojan</Button>
+            <Button x:Name="openConfigFileButton" Width="140" Margin="16 0 0 0">Edit Configuration File</Button>
+            <Button x:Name="exitAppButton" Width="88" Margin="16 0 0 0" Click="ExitAppButton_Click">Exit Program</Button>
         </StackPanel>
     </Grid>
 </Window>
