@@ -1,0 +1,50 @@
+﻿<Window x:Class="TrojanWin.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TrojanWin"
+        mc:Ignorable="d"
+        Title="TrojanWin" Height="450" Width="800"
+        Closing="Window_Closing"
+        Initialized="Window_Initialized"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*"></ColumnDefinition>
+                <ColumnDefinition Width="16"></ColumnDefinition>
+                <ColumnDefinition Width="50*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Trojan日志"></TextBlock>
+                <TextBox x:Name="trojanLogTextBox" Grid.Row="1" Text="{Binding TrojanLog}"
+                     TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True"
+                     VerticalScrollBarVisibility="Visible"></TextBox>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="程序日志"></TextBlock>
+                <TextBox x:Name="appLogTextBox" Grid.Row="1" Text="{Binding AppLog}"
+                     TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True"
+                     VerticalScrollBarVisibility="Visible"></TextBox>
+            </Grid>
+        </Grid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Height="24">
+            <Button x:Name="restartTrojanButton" Content="重启Trojan" Width="80"></Button>
+            <Button x:Name="openConfigFileButton" Content="编辑配置文件" Width="80" Margin="16 0 0 0"></Button>
+            <Button x:Name="exitAppButton" Content="退出程序" Width="80" Margin="16 0 0 0" Click="ExitAppButton_Click"></Button>
+        </StackPanel>
+    </Grid>
+</Window>
